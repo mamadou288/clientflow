@@ -1,8 +1,15 @@
+import PageHeader from "../components/ui/PageHeader";
+
 function Contacts() {
   return (
     <div>
-      <h1>Contacts</h1>
-      <p>Vos interlocuteurs chez chaque client.</p>
+      <PageHeader
+        title="Contacts"
+        subtitle="Vos interlocuteurs chez chaque client"
+      />
+      <p style={{ color: "var(--color-text-muted)" }}>
+        La liste des contacts arrivera à l'étape suivante.
+      </p>
     </div>
   );
 }

@@ -1,0 +1,66 @@
+/**
+ * Single source of truth for the main navigation.
+ * Used by the Sidebar to render links and by the router to stay consistent.
+ * Each icon is a small inline SVG to avoid pulling an icon dependency.
+ */
+
+const iconProps = {
+  width: 20,
+  height: 20,
+  viewBox: "0 0 24 24",
+  fill: "none",
+  stroke: "currentColor",
+  strokeWidth: 2,
+  strokeLinecap: "round",
+  strokeLinejoin: "round",
+};
+
+export const navItems = [
+  {
+    to: "/",
+    label: "Dashboard",
+    end: true,
+    icon: (
+      <svg {...iconProps}>
+        <rect x="3" y="3" width="7" height="9" />
+        <rect x="14" y="3" width="7" height="5" />
+        <rect x="14" y="12" width="7" height="9" />
+        <rect x="3" y="16" width="7" height="5" />
+      </svg>
+    ),
+  },
+  {
+    to: "/companies",
+    label: "Entreprises",
+    icon: (
+      <svg {...iconProps}>
+        <path d="M3 21h18" />
+        <path d="M5 21V7l8-4v18" />
+        <path d="M19 21V11l-6-4" />
+        <path d="M9 9v.01M9 12v.01M9 15v.01M9 18v.01" />
+      </svg>
+    ),
+  },
+  {
+    to: "/contacts",
+    label: "Contacts",
+    icon: (
+      <svg {...iconProps}>
+        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+        <circle cx="9" cy="7" r="4" />
+        <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+        <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+      </svg>
+    ),
+  },
+  {
+    to: "/deals",
+    label: "Opportunités",
+    icon: (
+      <svg {...iconProps}>
+        <line x1="12" y1="1" x2="12" y2="23" />
+        <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+      </svg>
+    ),
+  },
+];
