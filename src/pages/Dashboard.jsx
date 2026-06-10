@@ -1,8 +1,15 @@
+import PageHeader from "../components/ui/PageHeader";
+
 function Dashboard() {
   return (
     <div>
-      <h1>Dashboard</h1>
-      <p>Vue d'ensemble de votre activité commerciale.</p>
+      <PageHeader
+        title="Dashboard"
+        subtitle="Vue d'ensemble de votre activité commerciale"
+      />
+      <p style={{ color: "var(--color-text-muted)" }}>
+        Les indicateurs clés arriveront à l'étape suivante.
+      </p>
     </div>
   );
 }
