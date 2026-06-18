@@ -5,22 +5,31 @@ import Spinner from "../components/ui/Spinner";
 import Table from "../components/ui/Table";
 import Badge from "../components/ui/Badge";
 import PipelineBoard from "../components/deals/PipelineBoard";
+import Button from "../components/ui/Button";
+import Modal from "../components/ui/Modal";
+import DealForm from "../components/deals/DealForm";
 import { useFetch } from "../hooks/useFetch";
 import { getStage } from "../data/dealStages";
 import { getDeals } from "../services/dealService";
 import { getCompanies } from "../services/companyService";
+import { getContacts } from "../services/contactService";
 import { formatCurrency, formatDate } from "../utils/format";
 import "./Deals.css";
 
 function Deals() {
-  const { data, loading, error } = useFetch(() =>
-    Promise.all([getDeals(), getCompanies()]).then(([deals, companies]) => ({
-      deals,
-      companies,
-    }))
+  const { data, loading, error, refetch } = useFetch(() =>
+    Promise.all([getDeals(), getCompanies(), getContacts()]).then(
+      ([deals, companies, contacts]) => ({ deals, companies, contacts })
+    )
   );
   const [search, setSearch] = useState("");
   const [view, setView] = useState("pipeline");
+  const [showForm, setShowForm] = useState(false);
+
+  const handleCreated = () => {
+    setShowForm(false);
+    refetch();
+  };
 
   const companyName = useMemo(() => {
     const map = new Map();
@@ -77,7 +86,19 @@ function Deals() {
       <PageHeader
         title="Opportunités"
         subtitle="Suivez votre pipeline commercial"
+        actions={<Button onClick={() => setShowForm(true)}>+ Ajouter</Button>}
       />
+
+      {showForm && (
+        <Modal title="Nouvelle opportunité" onClose={() => setShowForm(false)}>
+          <DealForm
+            companies={data?.companies ?? []}
+            contacts={data?.contacts ?? []}
+            onSuccess={handleCreated}
+            onCancel={() => setShowForm(false)}
+          />
+        </Modal>
+      )}
 
       {error ? (
         <p className="deals__error">
