@@ -7,10 +7,12 @@ import Badge from "../components/ui/Badge";
 import PipelineBoard from "../components/deals/PipelineBoard";
 import Button from "../components/ui/Button";
 import Modal from "../components/ui/Modal";
+import DeleteButton from "../components/ui/DeleteButton";
+import ConfirmDialog from "../components/ui/ConfirmDialog";
 import DealForm from "../components/deals/DealForm";
 import { useFetch } from "../hooks/useFetch";
 import { getStage } from "../data/dealStages";
-import { getDeals } from "../services/dealService";
+import { getDeals, deleteDeal } from "../services/dealService";
 import { getCompanies } from "../services/companyService";
 import { getContacts } from "../services/contactService";
 import { formatCurrency, formatDate } from "../utils/format";
@@ -25,10 +27,27 @@ function Deals() {
   const [search, setSearch] = useState("");
   const [view, setView] = useState("pipeline");
   const [showForm, setShowForm] = useState(false);
+  const [toDelete, setToDelete] = useState(null);
+  const [deleting, setDeleting] = useState(false);
+  const [deleteError, setDeleteError] = useState(null);
 
   const handleCreated = () => {
     setShowForm(false);
     refetch();
+  };
+
+  const handleDelete = async () => {
+    setDeleting(true);
+    setDeleteError(null);
+    try {
+      await deleteDeal(toDelete.id);
+      setToDelete(null);
+      refetch();
+    } catch {
+      setDeleteError("La suppression a échoué. Réessayez.");
+    } finally {
+      setDeleting(false);
+    }
   };
 
   const companyName = useMemo(() => {
@@ -77,6 +96,12 @@ function Deals() {
         header: "Créée le",
         render: (row) => formatDate(row.createdAt),
       },
+      {
+        key: "actions",
+        header: "",
+        width: "1%",
+        render: (row) => <DeleteButton onDelete={() => setToDelete(row)} />,
+      },
     ],
     [companyName]
   );
@@ -98,6 +123,21 @@ function Deals() {
             onCancel={() => setShowForm(false)}
           />
         </Modal>
+      )}
+
+      {toDelete && (
+        <ConfirmDialog
+          title="Supprimer l'opportunité"
+          message={`Voulez-vous vraiment supprimer « ${toDelete.title} » ? Cette action est irréversible.`}
+          confirmLabel="Supprimer"
+          loading={deleting}
+          error={deleteError}
+          onConfirm={handleDelete}
+          onCancel={() => {
+            setToDelete(null);
+            setDeleteError(null);
+          }}
+        />
       )}
 
       {error ? (

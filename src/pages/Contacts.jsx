@@ -6,9 +6,11 @@ import Spinner from "../components/ui/Spinner";
 import Table from "../components/ui/Table";
 import Button from "../components/ui/Button";
 import Modal from "../components/ui/Modal";
+import DeleteButton from "../components/ui/DeleteButton";
+import ConfirmDialog from "../components/ui/ConfirmDialog";
 import ContactForm from "../components/contacts/ContactForm";
 import { useFetch } from "../hooks/useFetch";
-import { getContacts } from "../services/contactService";
+import { getContacts, deleteContact } from "../services/contactService";
 import { getCompanies } from "../services/companyService";
 import "./Contacts.css";
 
@@ -21,10 +23,27 @@ function Contacts() {
   );
   const [search, setSearch] = useState("");
   const [showForm, setShowForm] = useState(false);
+  const [toDelete, setToDelete] = useState(null);
+  const [deleting, setDeleting] = useState(false);
+  const [deleteError, setDeleteError] = useState(null);
 
   const handleCreated = () => {
     setShowForm(false);
     refetch();
+  };
+
+  const handleDelete = async () => {
+    setDeleting(true);
+    setDeleteError(null);
+    try {
+      await deleteContact(toDelete.id);
+      setToDelete(null);
+      refetch();
+    } catch {
+      setDeleteError("La suppression a échoué. Réessayez.");
+    } finally {
+      setDeleting(false);
+    }
   };
 
   // Map companyId -> name to display the company in the list (front-end join).
@@ -53,6 +72,12 @@ function Contacts() {
       },
       { key: "email", header: "Email" },
       { key: "phone", header: "Téléphone" },
+      {
+        key: "actions",
+        header: "",
+        width: "1%",
+        render: (row) => <DeleteButton onDelete={() => setToDelete(row)} />,
+      },
     ],
     [companyName]
   );
@@ -89,6 +114,21 @@ function Contacts() {
             onCancel={() => setShowForm(false)}
           />
         </Modal>
+      )}
+
+      {toDelete && (
+        <ConfirmDialog
+          title="Supprimer le contact"
+          message={`Voulez-vous vraiment supprimer « ${toDelete.firstName} ${toDelete.lastName} » ? Cette action est irréversible.`}
+          confirmLabel="Supprimer"
+          loading={deleting}
+          error={deleteError}
+          onConfirm={handleDelete}
+          onCancel={() => {
+            setToDelete(null);
+            setDeleteError(null);
+          }}
+        />
       )}
 
       {error ? (
