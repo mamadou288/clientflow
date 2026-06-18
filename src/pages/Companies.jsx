@@ -6,31 +6,13 @@ import Spinner from "../components/ui/Spinner";
 import Table from "../components/ui/Table";
 import Button from "../components/ui/Button";
 import Modal from "../components/ui/Modal";
+import DeleteButton from "../components/ui/DeleteButton";
+import ConfirmDialog from "../components/ui/ConfirmDialog";
 import CompanyForm from "../components/companies/CompanyForm";
 import { useFetch } from "../hooks/useFetch";
-import { getCompanies } from "../services/companyService";
+import { getCompanies, deleteCompany } from "../services/companyService";
 import { formatDate } from "../utils/format";
 import "./Companies.css";
-
-const columns = [
-  {
-    key: "name",
-    header: "Entreprise",
-    render: (row) => <span className="companies__name">{row.name}</span>,
-  },
-  { key: "industry", header: "Secteur" },
-  {
-    key: "city",
-    header: "Localisation",
-    render: (row) => `${row.city}, ${row.country}`,
-  },
-  { key: "employees", header: "Effectif" },
-  {
-    key: "createdAt",
-    header: "Ajoutée le",
-    render: (row) => formatDate(row.createdAt),
-  },
-];
 
 function Companies() {
   const navigate = useNavigate();
@@ -38,11 +20,54 @@ function Companies() {
   const [search, setSearch] = useState("");
   const [industry, setIndustry] = useState("all");
   const [showForm, setShowForm] = useState(false);
+  const [toDelete, setToDelete] = useState(null);
+  const [deleting, setDeleting] = useState(false);
+  const [deleteError, setDeleteError] = useState(null);
 
   const handleCreated = () => {
     setShowForm(false);
     refetch();
   };
+
+  const handleDelete = async () => {
+    setDeleting(true);
+    setDeleteError(null);
+    try {
+      await deleteCompany(toDelete.id);
+      setToDelete(null);
+      refetch();
+    } catch {
+      setDeleteError("La suppression a échoué. Réessayez.");
+    } finally {
+      setDeleting(false);
+    }
+  };
+
+  const columns = [
+    {
+      key: "name",
+      header: "Entreprise",
+      render: (row) => <span className="companies__name">{row.name}</span>,
+    },
+    { key: "industry", header: "Secteur" },
+    {
+      key: "city",
+      header: "Localisation",
+      render: (row) => `${row.city}, ${row.country}`,
+    },
+    { key: "employees", header: "Effectif" },
+    {
+      key: "createdAt",
+      header: "Ajoutée le",
+      render: (row) => formatDate(row.createdAt),
+    },
+    {
+      key: "actions",
+      header: "",
+      width: "1%",
+      render: (row) => <DeleteButton onDelete={() => setToDelete(row)} />,
+    },
+  ];
 
   const industries = useMemo(() => {
     if (!companies) return [];
@@ -78,6 +103,21 @@ function Companies() {
             onCancel={() => setShowForm(false)}
           />
         </Modal>
+      )}
+
+      {toDelete && (
+        <ConfirmDialog
+          title="Supprimer l'entreprise"
+          message={`Voulez-vous vraiment supprimer « ${toDelete.name} » ? Cette action est irréversible.`}
+          confirmLabel="Supprimer"
+          loading={deleting}
+          error={deleteError}
+          onConfirm={handleDelete}
+          onCancel={() => {
+            setToDelete(null);
+            setDeleteError(null);
+          }}
+        />
       )}
 
       {error ? (

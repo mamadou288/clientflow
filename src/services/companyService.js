@@ -19,3 +19,9 @@ export function createCompany(payload) {
   companies.push(company);
   return simulateRequest(company);
 }
+
+export function deleteCompany(id) {
+  const index = companies.findIndex((c) => c.id === Number(id));
+  if (index !== -1) companies.splice(index, 1);
+  return simulateRequest({ id: Number(id) });
+}

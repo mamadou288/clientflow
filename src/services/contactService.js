@@ -24,3 +24,9 @@ export function createContact(payload) {
   contacts.push(contact);
   return simulateRequest(contact);
 }
+
+export function deleteContact(id) {
+  const index = contacts.findIndex((c) => c.id === Number(id));
+  if (index !== -1) contacts.splice(index, 1);
+  return simulateRequest({ id: Number(id) });
+}

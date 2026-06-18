@@ -29,3 +29,9 @@ export function createDeal(payload) {
   deals.push(deal);
   return simulateRequest(deal);
 }
+
+export function deleteDeal(id) {
+  const index = deals.findIndex((d) => d.id === Number(id));
+  if (index !== -1) deals.splice(index, 1);
+  return simulateRequest({ id: Number(id) });
+}
