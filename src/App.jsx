@@ -4,6 +4,7 @@ import Dashboard from "./pages/Dashboard";
 import Companies from "./pages/Companies";
 import CompanyDetail from "./pages/CompanyDetail";
 import Contacts from "./pages/Contacts";
+import ContactDetail from "./pages/ContactDetail";
 import Deals from "./pages/Deals";
 import NotFound from "./pages/NotFound";
 
@@ -15,6 +16,7 @@ function App() {
         <Route path="companies" element={<Companies />} />
         <Route path="companies/:id" element={<CompanyDetail />} />
         <Route path="contacts" element={<Contacts />} />
+        <Route path="contacts/:id" element={<ContactDetail />} />
         <Route path="deals" element={<Deals />} />
       </Route>
       <Route path="*" element={<NotFound />} />

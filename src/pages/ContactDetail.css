@@ -1,0 +1,113 @@
+.contact-detail__back {
+  display: inline-block;
+  margin-bottom: var(--space-4);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--color-text-muted);
+}
+
+.contact-detail__back:hover {
+  color: var(--color-primary);
+}
+
+.contact-detail__header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  margin-bottom: var(--space-5);
+}
+
+.contact-detail__avatar {
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background-color: var(--color-primary-soft);
+  color: var(--color-primary);
+  font-weight: 700;
+  font-size: var(--text-lg);
+  flex-shrink: 0;
+}
+
+.contact-detail__title {
+  font-size: var(--text-xl);
+}
+
+.contact-detail__subtitle {
+  margin-top: var(--space-1);
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+}
+
+.contact-detail__card {
+  padding: var(--space-5);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  margin-bottom: var(--space-6);
+}
+
+.contact-detail__fields {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: var(--space-5);
+}
+
+.contact-detail__field dt {
+  font-size: var(--text-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-1);
+}
+
+.contact-detail__field dd {
+  font-size: var(--text-sm);
+  font-weight: 500;
+}
+
+.contact-detail__link {
+  color: var(--color-primary);
+  font-weight: 600;
+}
+
+.contact-detail__link:hover {
+  text-decoration: underline;
+}
+
+.contact-detail__section {
+  margin-bottom: var(--space-6);
+}
+
+.contact-detail__section-title {
+  font-size: var(--text-lg);
+  margin-bottom: var(--space-3);
+}
+
+.contact-detail__section-title span {
+  color: var(--color-text-muted);
+  font-weight: 400;
+}
+
+.contact-detail__strong {
+  font-weight: 600;
+}
+
+.contact-detail__error,
+.contact-detail__empty {
+  padding: var(--space-4);
+  border-radius: var(--radius-md);
+  font-size: var(--text-sm);
+}
+
+.contact-detail__error {
+  border: 1px solid var(--color-danger);
+  background-color: var(--color-danger-soft);
+  color: var(--color-danger);
+}
+
+.contact-detail__empty {
+  color: var(--color-text-muted);
+}
