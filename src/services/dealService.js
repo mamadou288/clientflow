@@ -15,6 +15,11 @@ export function getDealsByCompany(companyId) {
   return simulateRequest(result);
 }
 
+export function getDealsByContact(contactId) {
+  const result = deals.filter((d) => d.contactId === Number(contactId));
+  return simulateRequest(result);
+}
+
 export function createDeal(payload) {
   const deal = {
     ...payload,
