@@ -1,16 +1,20 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 /**
  * Generic data-fetching hook for the services layer.
  * Pass a function that returns a Promise (e.g. () => getCompanies()).
  * `deps` controls when the request re-runs (e.g. an id from the URL).
  *
- * Returns { data, loading, error } so every page handles all states the same way.
+ * Returns { data, loading, error, refetch }. Call refetch() to reload
+ * (e.g. after creating a record) without leaving the page.
  */
 export function useFetch(fetcher, deps = []) {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [reloadTick, setReloadTick] = useState(0);
+
+  const refetch = useCallback(() => setReloadTick((tick) => tick + 1), []);
 
   useEffect(() => {
     let active = true;
@@ -35,7 +39,7 @@ export function useFetch(fetcher, deps = []) {
       active = false;
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, deps);
+  }, [...deps, reloadTick]);
 
-  return { data, loading, error };
+  return { data, loading, error, refetch };
 }

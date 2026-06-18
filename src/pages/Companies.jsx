@@ -4,6 +4,9 @@ import PageHeader from "../components/ui/PageHeader";
 import SearchInput from "../components/ui/SearchInput";
 import Spinner from "../components/ui/Spinner";
 import Table from "../components/ui/Table";
+import Button from "../components/ui/Button";
+import Modal from "../components/ui/Modal";
+import CompanyForm from "../components/companies/CompanyForm";
 import { useFetch } from "../hooks/useFetch";
 import { getCompanies } from "../services/companyService";
 import { formatDate } from "../utils/format";
@@ -31,9 +34,15 @@ const columns = [
 
 function Companies() {
   const navigate = useNavigate();
-  const { data: companies, loading, error } = useFetch(getCompanies);
+  const { data: companies, loading, error, refetch } = useFetch(getCompanies);
   const [search, setSearch] = useState("");
   const [industry, setIndustry] = useState("all");
+  const [showForm, setShowForm] = useState(false);
+
+  const handleCreated = () => {
+    setShowForm(false);
+    refetch();
+  };
 
   const industries = useMemo(() => {
     if (!companies) return [];
@@ -56,7 +65,20 @@ function Companies() {
 
   return (
     <div>
-      <PageHeader title="Entreprises" subtitle="Gérez vos comptes clients" />
+      <PageHeader
+        title="Entreprises"
+        subtitle="Gérez vos comptes clients"
+        actions={<Button onClick={() => setShowForm(true)}>+ Ajouter</Button>}
+      />
+
+      {showForm && (
+        <Modal title="Nouvelle entreprise" onClose={() => setShowForm(false)}>
+          <CompanyForm
+            onSuccess={handleCreated}
+            onCancel={() => setShowForm(false)}
+          />
+        </Modal>
+      )}
 
       {error ? (
         <p className="companies__error">
