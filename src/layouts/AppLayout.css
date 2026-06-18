@@ -16,3 +16,27 @@
   max-width: 1280px;
   width: 100%;
 }
+
+/* Each routed page mounts fresh, so this fades content in on navigation. */
+.app-layout__content > * {
+  animation: fade-in 0.25s ease;
+}
+
+.app-layout__backdrop {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .app-layout__content {
+    padding: var(--space-4);
+  }
+
+  .app-layout__backdrop {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background-color: rgba(16, 24, 40, 0.45);
+    z-index: 150;
+    animation: fade-in 0.2s ease;
+  }
+}

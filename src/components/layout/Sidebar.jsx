@@ -2,9 +2,9 @@ import { NavLink } from "react-router-dom";
 import { navItems } from "../../routes/navItems";
 import "./Sidebar.css";
 
-function Sidebar() {
+function Sidebar({ open = false, onNavigate }) {
   return (
-    <aside className="sidebar">
+    <aside className={open ? "sidebar sidebar--open" : "sidebar"}>
       <div className="sidebar__brand">
         <span className="sidebar__logo">CF</span>
         <span className="sidebar__brand-name">ClientFlow</span>
@@ -16,6 +16,7 @@ function Sidebar() {
             key={item.to}
             to={item.to}
             end={item.end}
+            onClick={onNavigate}
             className={({ isActive }) =>
               isActive ? "sidebar__link sidebar__link--active" : "sidebar__link"
             }

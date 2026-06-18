@@ -11,6 +11,23 @@
   padding: var(--space-5) var(--space-3);
 }
 
+/* On mobile the sidebar slides in over the content as a drawer. */
+@media (max-width: 768px) {
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 200;
+    transform: translateX(-100%);
+    transition: transform 0.25s ease;
+    box-shadow: var(--shadow-md);
+  }
+
+  .sidebar--open {
+    transform: translateX(0);
+  }
+}
+
 .sidebar__brand {
   display: flex;
   align-items: center;

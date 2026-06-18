@@ -1,3 +1,4 @@
+import EmptyState from "./EmptyState";
 import "./Table.css";
 
 /**
@@ -10,7 +11,11 @@ import "./Table.css";
  */
 function Table({ columns, data, onRowClick, emptyMessage = "Aucun résultat." }) {
   if (!data || data.length === 0) {
-    return <p className="table__empty">{emptyMessage}</p>;
+    return (
+      <div className="table__empty">
+        <EmptyState message={emptyMessage} />
+      </div>
+    );
   }
 
   return (

@@ -13,6 +13,21 @@
   z-index: 10;
 }
 
+.topbar__menu {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-2);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background-color: var(--color-surface);
+  color: var(--color-text);
+}
+
+.topbar__menu:hover {
+  background-color: var(--color-bg);
+}
+
 .topbar__search {
   display: flex;
   align-items: center;
@@ -68,4 +83,25 @@
   color: var(--color-primary);
   font-weight: 700;
   font-size: var(--text-sm);
+  flex-shrink: 0;
+}
+
+@media (max-width: 768px) {
+  .topbar {
+    padding: 0 var(--space-4);
+  }
+
+  .topbar__menu {
+    display: inline-flex;
+  }
+
+  .topbar__search {
+    display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .topbar__user-info {
+    display: none;
+  }
 }
