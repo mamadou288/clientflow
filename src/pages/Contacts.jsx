@@ -4,6 +4,9 @@ import PageHeader from "../components/ui/PageHeader";
 import SearchInput from "../components/ui/SearchInput";
 import Spinner from "../components/ui/Spinner";
 import Table from "../components/ui/Table";
+import Button from "../components/ui/Button";
+import Modal from "../components/ui/Modal";
+import ContactForm from "../components/contacts/ContactForm";
 import { useFetch } from "../hooks/useFetch";
 import { getContacts } from "../services/contactService";
 import { getCompanies } from "../services/companyService";
@@ -11,12 +14,18 @@ import "./Contacts.css";
 
 function Contacts() {
   const navigate = useNavigate();
-  const { data, loading, error } = useFetch(() =>
+  const { data, loading, error, refetch } = useFetch(() =>
     Promise.all([getContacts(), getCompanies()]).then(
       ([contacts, companies]) => ({ contacts, companies })
     )
   );
   const [search, setSearch] = useState("");
+  const [showForm, setShowForm] = useState(false);
+
+  const handleCreated = () => {
+    setShowForm(false);
+    refetch();
+  };
 
   // Map companyId -> name to display the company in the list (front-end join).
   const companyName = useMemo(() => {
@@ -69,7 +78,18 @@ function Contacts() {
       <PageHeader
         title="Contacts"
         subtitle="Vos interlocuteurs chez chaque client"
+        actions={<Button onClick={() => setShowForm(true)}>+ Ajouter</Button>}
       />
+
+      {showForm && (
+        <Modal title="Nouveau contact" onClose={() => setShowForm(false)}>
+          <ContactForm
+            companies={data?.companies ?? []}
+            onSuccess={handleCreated}
+            onCancel={() => setShowForm(false)}
+          />
+        </Modal>
+      )}
 
       {error ? (
         <p className="contacts__error">
