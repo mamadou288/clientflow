@@ -1,6 +1,13 @@
+import { useAuth } from "../../auth/AuthContext";
+import Button from "../ui/Button";
 import "./Topbar.css";
 
 function Topbar({ onMenuClick }) {
+  const { user, logout } = useAuth();
+
+  const displayName = user?.firstName || user?.username || "";
+  const initials = (user?.firstName?.[0] ?? user?.username?.[0] ?? "?").toUpperCase();
+
   return (
     <header className="topbar">
       <button
@@ -48,10 +55,13 @@ function Topbar({ onMenuClick }) {
 
       <div className="topbar__user">
         <div className="topbar__user-info">
-          <span className="topbar__user-name">Sales Manager</span>
-          <span className="topbar__user-role">Administrateur</span>
+          <span className="topbar__user-name">{displayName}</span>
+          <span className="topbar__user-role">{user?.email || "Connecté"}</span>
         </div>
-        <span className="topbar__avatar">SM</span>
+        <span className="topbar__avatar">{initials}</span>
+        <Button variant="ghost" size="sm" onClick={logout}>
+          Déconnexion
+        </Button>
       </div>
     </header>
   );
