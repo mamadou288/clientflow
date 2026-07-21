@@ -1,27 +1,17 @@
-import { companies } from "../data/companies";
-import { simulateRequest, nextId, today } from "./mockApi";
+import { api } from "./http";
 
 export function getCompanies() {
-  return simulateRequest(companies);
+  return api.get("/companies/");
 }
 
 export function getCompanyById(id) {
-  const company = companies.find((c) => c.id === Number(id)) ?? null;
-  return simulateRequest(company);
+  return api.getOrNull(`/companies/${id}/`);
 }
 
 export function createCompany(payload) {
-  const company = {
-    ...payload,
-    id: nextId(companies),
-    createdAt: today(),
-  };
-  companies.push(company);
-  return simulateRequest(company);
+  return api.post("/companies/", payload);
 }
 
 export function deleteCompany(id) {
-  const index = companies.findIndex((c) => c.id === Number(id));
-  if (index !== -1) companies.splice(index, 1);
-  return simulateRequest({ id: Number(id) });
+  return api.del(`/companies/${id}/`).then(() => ({ id: Number(id) }));
 }
