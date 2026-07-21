@@ -12,5 +12,14 @@ export default defineConfig({
       // (les événements de fichiers ne traversent pas toujours le montage).
       usePolling: true,
     },
+    proxy: {
+      // Les appels "/api/..." du front sont transférés au backend Django.
+      // Cible = nom du service Docker (résolu sur le réseau interne).
+      // changeOrigin : réécrit le Host → "backend" (présent dans ALLOWED_HOSTS).
+      "/api": {
+        target: process.env.VITE_API_PROXY_TARGET || "http://backend:8000",
+        changeOrigin: true,
+      },
+    },
   },
 })

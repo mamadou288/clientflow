@@ -1,32 +1,21 @@
-import { contacts } from "../data/contacts";
-import { simulateRequest, nextId, today } from "./mockApi";
+import { api } from "./http";
 
 export function getContacts() {
-  return simulateRequest(contacts);
+  return api.get("/contacts/");
 }
 
 export function getContactById(id) {
-  const contact = contacts.find((c) => c.id === Number(id)) ?? null;
-  return simulateRequest(contact);
+  return api.getOrNull(`/contacts/${id}/`);
 }
 
 export function getContactsByCompany(companyId) {
-  const result = contacts.filter((c) => c.companyId === Number(companyId));
-  return simulateRequest(result);
+  return api.get(`/contacts/?company=${companyId}`);
 }
 
 export function createContact(payload) {
-  const contact = {
-    ...payload,
-    id: nextId(contacts),
-    createdAt: today(),
-  };
-  contacts.push(contact);
-  return simulateRequest(contact);
+  return api.post("/contacts/", payload);
 }
 
 export function deleteContact(id) {
-  const index = contacts.findIndex((c) => c.id === Number(id));
-  if (index !== -1) contacts.splice(index, 1);
-  return simulateRequest({ id: Number(id) });
+  return api.del(`/contacts/${id}/`).then(() => ({ id: Number(id) }));
 }
