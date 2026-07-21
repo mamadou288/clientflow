@@ -9,5 +9,6 @@ djangorestframework-simplejwt==5.3.1   # authentification JWT
 psycopg2-binary==2.9.10   # driver PostgreSQL
 gunicorn==23.0.0          # serveur WSGI de production
 
-# À venir (leçon tests) :
-# pytest, pytest-django
+# Tests
+pytest==8.3.4
+pytest-django==4.9.0
