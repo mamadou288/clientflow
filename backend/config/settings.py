@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     "rest_framework",
     "corsheaders",
     # Local
+    "users",
     "crm",
 ]
 
@@ -108,6 +109,9 @@ STATIC_URL = "static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# Modèle utilisateur custom (défini avant la 1re migration — voir app users).
+AUTH_USER_MODEL = "users.User"
 
 
 # Django REST Framework
