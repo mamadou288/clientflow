@@ -43,3 +43,20 @@ coverage
 # OS files
 .DS_Store
 Thumbs.db
+
+# --- Backend (Python / Django) ---
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+env/
+*.sqlite3
+db.sqlite3
+.pytest_cache/
+.mypy_cache/
+staticfiles/
+# secrets backend
+backend/.env
+backend/.env.*
+!backend/.env.example
