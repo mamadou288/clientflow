@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     # Third-party
+    "rest_framework",
     "corsheaders",
     # Local
     "crm",
@@ -107,6 +108,15 @@ STATIC_URL = "static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+
+# Django REST Framework
+# Pas de pagination : le front attend un tableau JSON simple (contrat identique au mock).
+# Permissions ouvertes pour l'instant ; l'auth JWT arrivera dans une leçon dédiée.
+REST_FRAMEWORK = {
+    "DEFAULT_PERMISSION_CLASSES": ["rest_framework.permissions.AllowAny"],
+    "DEFAULT_PAGINATION_CLASS": None,
+}
 
 
 # CORS — autorise le frontend Vite en dev ; configurable en prod.
