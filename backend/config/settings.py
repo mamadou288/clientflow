@@ -6,6 +6,7 @@ local, en Docker et en CI. Valeurs de repli sûres pour le développement.
 """
 
 import os
+from datetime import timedelta
 from pathlib import Path
 
 import dj_database_url
@@ -116,10 +117,19 @@ AUTH_USER_MODEL = "users.User"
 
 # Django REST Framework
 # Pas de pagination : le front attend un tableau JSON simple (contrat identique au mock).
-# Permissions ouvertes pour l'instant ; l'auth JWT arrivera dans une leçon dédiée.
+# Auth par JWT ; permissions encore ouvertes (on protégera l'API quand le login front sera prêt).
 REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
+    ],
     "DEFAULT_PERMISSION_CLASSES": ["rest_framework.permissions.AllowAny"],
     "DEFAULT_PAGINATION_CLASS": None,
+}
+
+# Durées de vie des tokens JWT.
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=60),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=7),
 }
 
 
